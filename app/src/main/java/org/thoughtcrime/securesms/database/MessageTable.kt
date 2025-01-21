@@ -5527,4 +5527,12 @@ open class MessageTable(context: Context?, databaseHelper: SignalDatabase) : Dat
       }
     }
   }
+
+  fun deleteAttachmentsOnly(messageId: Long): Boolean {
+    val threadId = getThreadIdForMessage(messageId)
+    val attachmentTable = SignalDatabase.attachments
+    attachmentTable.deleteAttachmentsForMessage(messageId)
+    notifyConversationListeners(threadId)
+    return true
+  }
 }

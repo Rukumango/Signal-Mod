@@ -113,6 +113,37 @@ class ChatsSettingsFragment : DSLSettingsFragment(R.string.preferences_chats__ch
           }
         )
       }
+
+      dividerPref()
+
+      sectionHeaderPref(R.string.preferences_chats__control_message_deletion)
+
+      switchPref(
+        title = DSLSettingsText.from(R.string.preferences_chats__chat_keep_view_once_messages),
+        summary = DSLSettingsText.from(R.string.preferences_chats__keep_view_once_messages_summary),
+        isChecked = state.keepViewOnceMessages,
+        onClick = {
+          viewModel.keepViewOnceMessages(!state.keepViewOnceMessages)
+        }
+      )
+
+      switchPref(
+        title = DSLSettingsText.from(R.string.preferences_chats__chat_ignore_remote_delete),
+        summary = DSLSettingsText.from(R.string.preferences_chats__chat_ignore_remote_delete_summary),
+        isChecked = state.ignoreRemoteDelete,
+        onClick = {
+          viewModel.ignoreRemoteDelete(!state.ignoreRemoteDelete)
+        }
+      )
+
+      switchPref(
+        title = DSLSettingsText.from(R.string.preferences_chats__delete_media_only),
+        summary = DSLSettingsText.from(R.string.preferences_chats__delete_media_only_summary),
+        isChecked = state.deleteMediaOnly,
+        onClick = {
+          viewModel.deleteMediaOnly(!state.deleteMediaOnly)
+        }
+      )
     }
   }
 }

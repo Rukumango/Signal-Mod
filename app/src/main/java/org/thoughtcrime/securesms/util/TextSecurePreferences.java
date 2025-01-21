@@ -165,6 +165,12 @@ public class TextSecurePreferences {
 
   private static final String GOOGLE_MAP_TYPE = "pref_google_map_type";
 
+  public static final String KEEP_VIEW_ONCE_MESSAGES = "pref_keep_view_once_messages";
+
+  public static final String IGNORE_REMOTE_DELETE = "pref_ignore_remote_delete";
+
+  public static final String DELETE_MEDIA_ONLY = "pref_delete_media_only";
+
   public static String getGoogleMapType(Context context) {
     return getStringPreference(context, GOOGLE_MAP_TYPE, "normal");
   }
@@ -187,7 +193,10 @@ public class TextSecurePreferences {
                                                               CALL_VIBRATE_PREF,
                                                               NEW_CONTACTS_NOTIFICATIONS,
                                                               SYSTEM_EMOJI_PREF,
-                                                              ENTER_SENDS_PREF};
+                                                              ENTER_SENDS_PREF,
+                                                              KEEP_VIEW_ONCE_MESSAGES,
+                                                              IGNORE_REMOTE_DELETE,
+                                                              DELETE_MEDIA_ONLY};
 
   private static final String[] stringPreferencesToBackup = {LED_COLOR_PREF,
                                                              LED_BLINK_PREF,
@@ -1077,5 +1086,29 @@ public class TextSecurePreferences {
   // NEVER rename these -- they're persisted by name
   public enum MediaKeyboardMode {
     EMOJI, STICKER, GIF
+  }
+
+  public static boolean isKeepViewOnceMessages(Context context) {
+    return getBooleanPreference(context, KEEP_VIEW_ONCE_MESSAGES, false);
+  }
+
+  public static void setKeepViewOnceMessages(Context context, boolean value) {
+    setBooleanPreference(context, KEEP_VIEW_ONCE_MESSAGES, value);
+  }
+
+  public static boolean isIgnoreRemoteDelete(Context context) {
+    return getBooleanPreference(context, IGNORE_REMOTE_DELETE, false);
+  }
+
+  public static void setIgnoreRemoteDelete(Context context, boolean value) {
+    setBooleanPreference(context, IGNORE_REMOTE_DELETE, value);
+  }
+
+  public static boolean isDeleteMediaOnly(Context context) {
+    return getBooleanPreference(context, DELETE_MEDIA_ONLY, false);
+  }
+
+   public static void setDeleteMediaOnly(Context context, boolean value) {
+    setBooleanPreference(context, DELETE_MEDIA_ONLY, value);
   }
 }

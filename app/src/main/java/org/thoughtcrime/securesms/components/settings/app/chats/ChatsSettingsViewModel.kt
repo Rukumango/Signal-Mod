@@ -10,6 +10,7 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.util.BackupUtil
 import org.thoughtcrime.securesms.util.ConversationUtil
+import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.thoughtcrime.securesms.util.ThrottledDebouncer
 import org.thoughtcrime.securesms.util.livedata.Store
 
@@ -27,6 +28,9 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
       useSystemEmoji = SignalStore.settings.isPreferSystemEmoji,
       enterKeySends = SignalStore.settings.isEnterKeySends,
       localBackupsEnabled = SignalStore.settings.isBackupEnabled && BackupUtil.canUserAccessBackupDirectory(AppDependencies.application),
+      keepViewOnceMessages = TextSecurePreferences.isKeepViewOnceMessages(AppDependencies.application),
+      ignoreRemoteDelete = TextSecurePreferences.isIgnoreRemoteDelete(AppDependencies.application),
+      deleteMediaOnly = TextSecurePreferences.isDeleteMediaOnly(AppDependencies.application),
       folderCount = 0
     )
   )
@@ -82,5 +86,35 @@ class ChatsSettingsViewModel @JvmOverloads constructor(
         }
       }
     }
+
+    store.update { getState().copy() }
   }
+
+  fun keepViewOnceMessages(enabled: Boolean) {
+    TextSecurePreferences.setKeepViewOnceMessages(AppDependencies.application, enabled)
+    refresh()
+  }
+
+  fun ignoreRemoteDelete(enabled: Boolean) {
+    TextSecurePreferences.setIgnoreRemoteDelete(AppDependencies.application, enabled)
+    refresh()
+  }
+
+  fun deleteMediaOnly(enabled: Boolean) {
+    TextSecurePreferences.setDeleteMediaOnly(AppDependencies.application, enabled)
+    refresh()
+  }
+
+  private fun getState() = ChatsSettingsState(
+    generateLinkPreviews = SignalStore.settings.isLinkPreviewsEnabled,
+    useAddressBook = SignalStore.settings.isPreferSystemContactPhotos,
+    keepMutedChatsArchived = SignalStore.settings.shouldKeepMutedChatsArchived(),
+    useSystemEmoji = SignalStore.settings.isPreferSystemEmoji,
+    enterKeySends = SignalStore.settings.isEnterKeySends,
+    localBackupsEnabled  = SignalStore.settings.isBackupEnabled,
+    folderCount = ChatFoldersRepository.getFolderCount(),
+    keepViewOnceMessages = TextSecurePreferences.isKeepViewOnceMessages(AppDependencies.application),
+    ignoreRemoteDelete = TextSecurePreferences.isIgnoreRemoteDelete(AppDependencies.application),
+    deleteMediaOnly = TextSecurePreferences.isDeleteMediaOnly(AppDependencies.application)
+  )
 }
